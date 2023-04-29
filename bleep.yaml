@@ -25,13 +25,11 @@ projects:
   native:
     sourcegen: scripts/Jextract
     extends: template-common
-# scripts:
-  # jextract: scripts/Jextract
 templates:
   template-common:
     platform:
       name: jvm
-      jvmOptions: ["--enable-preview", "-Djava.library.path=native/target/debug"]
+      jvmOptions: ["--enable-preview", "--enable-native-access=ALL-UNNAMED", "-Djava.library.path=native/target/debug"]
     scala:
       options: -encoding utf8 -feature -unchecked
       strict: true

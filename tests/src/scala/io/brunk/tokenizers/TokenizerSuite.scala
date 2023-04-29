@@ -19,5 +19,26 @@ class TokenizerSuite extends munit.FunSuite {
 
     val expectedWordIds = None +: (0 to 10).map(id => Some(id.toLong)) :+ None
     assertEquals(encoding.wordIds, expectedWordIds)
+
+    assertEquals(encoding.nSequences, 1)
+
+    assertEquals(
+      encoding.offsets,
+      Seq(
+        (0L, 0L),
+        (0L, 5L),
+        (5L, 6L),
+        (7L, 8L),
+        (8L, 9L),
+        (9L, 12L),
+        (12L, 13L),
+        (14L, 17L),
+        (18L, 21L),
+        (22L, 25L),
+        (26L, 27L),
+        (28L, 29L),
+        (0L, 0L)
+      )
+    )
   }
 }

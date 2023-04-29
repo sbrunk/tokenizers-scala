@@ -1,19 +1,25 @@
 #### Extracted from: native/target/headers-gen/lib.h
 
---include-struct ExtResult_Encoding             # header: native/target/headers-gen/lib.h
---include-struct ExtResult_Tokenizer            # header: native/target/headers-gen/lib.h
---include-macro Err_Encoding                    # header: native/target/headers-gen/lib.h
---include-macro Err_Tokenizer                   # header: native/target/headers-gen/lib.h
---include-macro OK_Encoding                     # header: native/target/headers-gen/lib.h
---include-macro OK_Tokenizer                    # header: native/target/headers-gen/lib.h
 --include-function encoding_attention_mask      # header: native/target/headers-gen/lib.h
+--include-function encoding_free                # header: native/target/headers-gen/lib.h
 --include-function encoding_ids                 # header: native/target/headers-gen/lib.h
 --include-function encoding_len                 # header: native/target/headers-gen/lib.h
 --include-function encoding_n_sequences         # header: native/target/headers-gen/lib.h
+--include-function encoding_offsets             # header: native/target/headers-gen/lib.h
 --include-function encoding_special_tokens_mask # header: native/target/headers-gen/lib.h
 --include-function encoding_tokens              # header: native/target/headers-gen/lib.h
 --include-function encoding_type_ids            # header: native/target/headers-gen/lib.h
 --include-function encoding_word_ids            # header: native/target/headers-gen/lib.h
 --include-function from_pretrained              # header: native/target/headers-gen/lib.h
+--include-function offset_free                  # header: native/target/headers-gen/lib.h
+--include-function string_free                  # header: native/target/headers-gen/lib.h
 --include-function tokenizer_encode             # header: native/target/headers-gen/lib.h
 --include-function tokenizer_free               # header: native/target/headers-gen/lib.h
+--include-function vec_free                     # header: native/target/headers-gen/lib.h
+--include-struct ExtResult_Encoding             # header: native/target/headers-gen/lib.h
+--include-struct ExtResult_Tokenizer            # header: native/target/headers-gen/lib.h
+--include-struct Offset                         # header: native/target/headers-gen/lib.h
+--include-macro Err_Encoding                    # header: native/target/headers-gen/lib.h
+--include-macro Err_Tokenizer                   # header: native/target/headers-gen/lib.h
+--include-macro OK_Encoding                     # header: native/target/headers-gen/lib.h
+--include-macro OK_Tokenizer                    # header: native/target/headers-gen/lib.h

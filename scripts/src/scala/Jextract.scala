@@ -15,9 +15,7 @@ object Jextract extends BleepCodegenScript("Jextract") {
       .out
       .text()
       .stripLineEnd + "/usr/include"
-    println(os.pwd)
     targets.foreach { target =>
-        println("sources: " + target.sources)
         val cmd = os.proc(
           "jextract",
           "-t",
