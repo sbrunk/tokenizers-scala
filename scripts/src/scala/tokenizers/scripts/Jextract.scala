@@ -1,3 +1,5 @@
+package tokenizers.scripts
+
 import bleep.*
 
 object Jextract extends BleepCodegenScript("Jextract") {
@@ -24,8 +26,8 @@ object Jextract extends BleepCodegenScript("Jextract") {
           "native/src",
           "-I",
           includePath,
-          "-l",
-          "tokenizers_scala",
+          // "-l",
+          // "tokenizers",
           "--source",
           "@scripts/src/resources/includes.txt",
           "native/target/headers-gen/lib.h",

@@ -1,11 +1,12 @@
 $schema: https://raw.githubusercontent.com/oyvindberg/bleep/master/schema.json
-$version: 0.0.1-M26
+$version: 0.0.1-M27
 jvm:
   name: graalvm-java19:22.3.1
 projects:
   scripts:
     dependencies:
     - build.bleep::bleep-core:${BLEEP_VERSION}
+    - build.bleep::bleep-plugin-jni:${BLEEP_VERSION}
     - com.lihaoyi::os-lib:0.9.1
     extends: template-common
     scala:
@@ -23,7 +24,11 @@ projects:
       mainClass: com.foo.App
     dependsOn: native
   native:
-    sourcegen: scripts/Jextract
+    sourcegen:
+      - main: tokenizers.scripts.GenJniLibrary
+        project: scripts
+      - main: tokenizers.scripts.Jextract
+        project: scripts
     extends: template-common
 templates:
   template-common:

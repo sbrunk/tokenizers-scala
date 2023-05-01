@@ -28,6 +28,8 @@ class Tokenizer private (tokenizerPtr: MemoryAddress, session: MemorySession)
 
 object Tokenizer {
 
+  LoadNativeTokenizers()
+
   def extractError(errPtr: MemoryAddress) =
     val e = errPtr.getUtf8String(0)
     string_free(errPtr)
