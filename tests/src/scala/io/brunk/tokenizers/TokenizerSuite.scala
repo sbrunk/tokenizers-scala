@@ -11,7 +11,12 @@ class TokenizerSuite extends munit.FunSuite {
       encoding.ids,
       Seq[Long](101, 8667, 117, 194, 112, 1155, 106, 1731, 1132, 1128, 100, 136, 102)
     )
+
     assert(encoding.typeIds.forall(_ == 0))
+
+    assert(encoding.attentionMask.forall(_ == 1))
+
+    assertEquals(encoding.specialTokensMask, 1L +: Seq.fill(11)(0L) :+ 1L)
 
     val expectedTokens =
       Seq("[CLS]", "Hello", ",", "y", "'", "all", "!", "How", "are", "you", "[UNK]", "?", "[SEP]")

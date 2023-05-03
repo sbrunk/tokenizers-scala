@@ -1,7 +1,7 @@
 $schema: https://raw.githubusercontent.com/oyvindberg/bleep/master/schema.json
 $version: 0.0.1-M27
 jvm:
-  name: graalvm-java19:22.3.1
+  name: graalvm-java17:22.3.1
 projects:
   scripts:
     dependencies:
@@ -17,27 +17,23 @@ projects:
     extends: template-common
     isTestProject: true
   tokenizers-scala:
-    dependencies: com.lihaoyi::fansi:0.3.1
+    dependencies:
+    - com.lihaoyi::fansi:0.3.1
+    - io.github.astonbitecode:j4rs:0.15.0
     extends: template-common
     platform:
       name: jvm
-      mainClass: com.foo.App
     dependsOn: native
   native:
     sourcegen:
       - main: tokenizers.scripts.GenJniLibrary
-        project: scripts
-      - main: tokenizers.scripts.Jextract
         project: scripts
     extends: template-common
 templates:
   template-common:
     platform:
       name: jvm
-      jvmOptions: ["--enable-preview", "--enable-native-access=ALL-UNNAMED", "-Djava.library.path=native/target/debug"]
     scala:
       options: -encoding utf8 -feature -unchecked
       strict: true
       version: 3.2.2
-    java: 
-      options: ["--enable-preview", "--release", "19"]
