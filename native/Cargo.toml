@@ -6,9 +6,7 @@ edition = "2021"
 
 [dependencies]
 tokenizers = "0.13.3"
-j4rs = "0.15"
-j4rs_derive = "0.1"
-serde = { version = "1.0", features = ["derive"] }
+jni = "0.21.1"
 
 [lib]
 crate_type = ["cdylib"]

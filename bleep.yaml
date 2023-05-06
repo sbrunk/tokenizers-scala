@@ -29,6 +29,8 @@ projects:
       - main: tokenizers.scripts.GenJniLibrary
         project: scripts
     extends: template-common
+scripts:
+  javah: scripts/tokenizers.scripts.Javah
 templates:
   template-common:
     platform:

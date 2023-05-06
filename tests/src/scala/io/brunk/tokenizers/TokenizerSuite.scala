@@ -1,10 +1,10 @@
 package io.brunk.tokenizers
 
 class TokenizerSuite extends munit.FunSuite {
-  test("pretrained-tokenizer") {
-    val tokenizer = Tokenizer.fromPretrained("bert-base-cased")
-    val encoding = tokenizer.encode("Hello, y'all! How are you 😁 ?")
 
+  // assert encoding for
+  // Hello, y'all! How are you 😁 ?
+  def assertEncoding(encoding: Encoding) = 
     assertEquals(encoding.length, 13)
 
     assertEquals(
@@ -45,5 +45,22 @@ class TokenizerSuite extends munit.FunSuite {
         (0L, 0L)
       )
     )
+
+  test("pretrained-tokenizer-encode") {
+    val tokenizer = Tokenizer.fromPretrained("bert-base-cased")
+    val encoding = tokenizer.encode("Hello, y'all! How are you 😁 ?")
+
+    assertEncoding(encoding)
   }
+
+  test("pretrained-tokenizer-encode-batch") {
+    val tokenizer = Tokenizer.fromPretrained("bert-base-cased")
+    val encodings = tokenizer.encodeBatch(Seq("Hi all", "Hello, y'all! How are you 😁 ?"))
+
+    assertEquals(encodings.length, 2)
+
+    assertEncoding(encodings(1))
+
+  }
+
 }

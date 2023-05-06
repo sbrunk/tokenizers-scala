@@ -1,16 +1,36 @@
 package io.brunk.tokenizers
 
-import org.astonbitecode.j4rs.api.java2rust.Java2RustUtils
-import org.astonbitecode.j4rs.api.Instance
+import io.brunk.tokenizers.Tokenizer.freeAction
 
-class Tokenizer private (tokenizerPtr: Instance[java.lang.Long]) {
+import scala.annotation.static
+import io.brunk.tokenizers.Tokenizer.free
+import scala.collection.immutable.ArraySeq
+
+class Tokenizer private (nativePtr: Long) {
+
+  private val cleanable = NativeCleaner.cleaner.register(this, freeAction(nativePtr))
+
+  @native
+  private def encode(
+      tokenizerPtr: Long,
+      input: String,
+      addSpecialTokens: Boolean
+  ): Long
+
   def encode(input: String, addSpecialTokens: Boolean = true): Encoding =
-    val nativeInput: Instance[String] = Java2RustUtils.createInstance(input)
-    val nativeAddSpecialTokens: Instance[java.lang.Boolean] =
-      Java2RustUtils.createInstance(addSpecialTokens)
-    val encodingPtr =
-      NativeInterface.tokenizerEncode(tokenizerPtr, nativeInput, nativeAddSpecialTokens)
+    val encodingPtr = encode(nativePtr, input, addSpecialTokens)
     Encoding(encodingPtr)
+
+  @native
+  private def encodeBatch(
+      tokenizerPtr: Long,
+      input: Array[String],
+      addSpecialTokens: Boolean
+  ): Array[Long]
+
+  def encodeBatch(input: Seq[String], addSpecialTokens: Boolean = true): Seq[Encoding] =
+    val encodingsPtr = encodeBatch(nativePtr, input.toArray, addSpecialTokens)
+    ArraySeq.unsafeWrapArray(encodingsPtr.map(ptr => Encoding(ptr: Long)))
 }
 
 object Tokenizer {
@@ -27,10 +47,15 @@ object Tokenizer {
     * TODO revision and auth token
     */
   def fromPretrained(identifier: String): Tokenizer =
-    val tokenizerPtr = NativeInterface.fromPretrained(Java2RustUtils.createInstance(identifier))
-    Tokenizer(tokenizerPtr)
+    val nativePtr = fromPretrainedNative(identifier)
+    Tokenizer(nativePtr)
 
-  // private def freeTokenizerAction(tokenizerPtr: MemoryAddress): Runnable = () =>
-  //   tokenizer_free(tokenizerPtr)
+  @native
+  private def fromPretrainedNative(identifier: String): Long
+
+  @native
+  private def free(nativePtr: Long): Unit
+
+  private def freeAction(nativePtr: Long): Runnable = () => free(nativePtr)
 
 }
