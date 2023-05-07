@@ -23,6 +23,19 @@ pub extern "system" fn Java_io_brunk_tokenizers_Tokenizer_00024_fromPretrainedNa
 }
 
 #[no_mangle]
+pub extern "system" fn Java_io_brunk_tokenizers_Tokenizer_00024_fromFile(
+    mut env: JNIEnv,
+    _object: JObject,
+    path: JString,
+) -> jlong {
+    wrap_errors(|| {
+        let identifier: String = env.get_string(&path)?.into();
+        Tokenizer::from_file(identifier).map(to_boxed_ptr)
+    })
+    .jvm_unwrap(&mut env, -1)
+}
+
+#[no_mangle]
 pub extern "system" fn Java_io_brunk_tokenizers_Tokenizer_encode(
     mut env: JNIEnv,
     _object: JObject,

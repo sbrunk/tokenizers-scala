@@ -5,6 +5,7 @@ import io.brunk.tokenizers.Tokenizer.freeAction
 import scala.annotation.static
 import io.brunk.tokenizers.Tokenizer.free
 import scala.collection.immutable.ArraySeq
+import java.nio.file.Path
 
 class Tokenizer private (nativePtr: Long) {
 
@@ -60,8 +61,21 @@ object Tokenizer {
     val nativePtr = fromPretrainedNative(identifier)
     Tokenizer(nativePtr)
 
+  /** Instantiate a new Tokenizer from the file at the given path.
+    *
+    * @param path
+    *   A path to a local JSON file representing a previously serialized [[Tokenizer]]
+    * @return
+    *   The new tokenizer
+    */
+  def fromFile(path: Path): Tokenizer = Tokenizer(fromFile(path.toString()))
+
   @native
   private def fromPretrainedNative(identifier: String): Long
+
+  @native
+  private
+  def fromFile(path: String): Long
 
   @native
   private def free(nativePtr: Long): Unit
