@@ -4,7 +4,7 @@ class TokenizerSuite extends munit.FunSuite {
 
   // assert encoding for
   // Hello, y'all! How are you 😁 ?
-  def assertEncoding(encoding: Encoding) = 
+  def assertEncoding(encoding: Encoding) =
     assertEquals(encoding.length, 13)
 
     assertEquals(
@@ -53,6 +53,14 @@ class TokenizerSuite extends munit.FunSuite {
     assertEncoding(encoding)
   }
 
+  test("pretrained-tokenizer-encode-decode") {
+    val tokenizer = Tokenizer.fromPretrained("bert-base-cased")
+    val encoding = tokenizer.encode("Hello, y'all! How are you 😁 ?")
+    val decoded = tokenizer.decode(encoding.ids)
+
+    assertEquals(decoded, "Hello, y ' all! How are you?")
+  }
+
   test("pretrained-tokenizer-encode-batch") {
     val tokenizer = Tokenizer.fromPretrained("bert-base-cased")
     val encodings = tokenizer.encodeBatch(Seq("Hi all", "Hello, y'all! How are you 😁 ?"))
@@ -60,7 +68,14 @@ class TokenizerSuite extends munit.FunSuite {
     assertEquals(encodings.length, 2)
 
     assertEncoding(encodings(1))
+  }
 
+  test("pretrained-tokenizer-fail-on-invalid") {
+    interceptMessage[java.lang.RuntimeException](
+      """Model "invalid-tokenizer-123" on the Hub doesn't have a tokenizer"""
+    ) {
+      Tokenizer.fromPretrained("invalid-tokenizer-123")
+    }
   }
 
 }

@@ -31,6 +31,16 @@ class Tokenizer private (nativePtr: Long) {
   def encodeBatch(input: Seq[String], addSpecialTokens: Boolean = true): Seq[Encoding] =
     val encodingsPtr = encodeBatch(nativePtr, input.toArray, addSpecialTokens)
     ArraySeq.unsafeWrapArray(encodingsPtr.map(ptr => Encoding(ptr: Long)))
+
+  @native
+  private def decode(
+      tokenizerPtr: Long,
+      ids: Array[Long],
+      skipSpecialTokens: Boolean
+  ): String
+
+  def decode(ids: Seq[Long], skipSpecialTokens: Boolean = true): String =
+    decode(nativePtr, ids.toArray, skipSpecialTokens)
 }
 
 object Tokenizer {
