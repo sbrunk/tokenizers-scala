@@ -1,16 +1,13 @@
 package io.brunk.tokenizers
 
 import scala.collection.immutable.ArraySeq
-import org.astonbitecode.j4rs.api.Instance
-import org.astonbitecode.j4rs.api.java2rust.Java2RustUtils
 import io.brunk.tokenizers.Encoding.freeAction
-
-type Offset = (Long, Long)
+import io.brunk.tokenizers.Encoding.Offset
 
 /* Represents the output of a [Tokenizer]. */
 class Encoding private[tokenizers] (nativePtr: Long) {
 
-  private val cleanable = NativeCleaner.cleaner.register(this, freeAction(nativePtr))
+  NativeCleaner.cleaner.register(this, freeAction(nativePtr))
 
   @native private def length(encodingPtr: Long): Int
 
@@ -48,13 +45,14 @@ class Encoding private[tokenizers] (nativePtr: Long) {
   /** Indice of the word associated with each token/ID */
   def wordIds: Seq[Option[Long]] =
     ArraySeq.unsafeWrapArray(
-      wordIds(nativePtr).map(wordId => if wordId == -1 then None else Some(wordId))
+      wordIds(nativePtr).map(wordId => if (wordId == -1) None else Some(wordId))
     )
 
   /** Offsets of the token/ID from the NormalizedString */
-  def offsets: Seq[Offset] =
+  def offsets: Seq[Offset] = {
     val nativeOffsets = offsets(nativePtr)
     ArraySeq.unsafeWrapArray(nativeOffsets.starts.zip(nativeOffsets.ends))
+  }
 
   /** Mask identifying padding tokens for the attention mechanism */
   def attentionMask: Seq[Long] = ArraySeq.unsafeWrapArray(attentionMask(nativePtr))
@@ -71,6 +69,8 @@ class Encoding private[tokenizers] (nativePtr: Long) {
 }
 
 object Encoding {
+  type Offset = (Long, Long)
+
   @native
   private def free(nativePtr: Long): Unit
 

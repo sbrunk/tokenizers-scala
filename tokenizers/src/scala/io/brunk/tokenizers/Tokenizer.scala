@@ -2,14 +2,12 @@ package io.brunk.tokenizers
 
 import io.brunk.tokenizers.Tokenizer.freeAction
 
-import scala.annotation.static
-import io.brunk.tokenizers.Tokenizer.free
 import scala.collection.immutable.ArraySeq
 import java.nio.file.Path
 
 class Tokenizer private (nativePtr: Long) {
 
-  private val cleanable = NativeCleaner.cleaner.register(this, freeAction(nativePtr))
+  NativeCleaner.cleaner.register(this, freeAction(nativePtr))
 
   @native
   private def encode(
@@ -18,9 +16,10 @@ class Tokenizer private (nativePtr: Long) {
       addSpecialTokens: Boolean
   ): Long
 
-  def encode(input: String, addSpecialTokens: Boolean = true): Encoding =
+  def encode(input: String, addSpecialTokens: Boolean = true): Encoding = {
     val encodingPtr = encode(nativePtr, input, addSpecialTokens)
-    Encoding(encodingPtr)
+    new Encoding(encodingPtr)
+  }
 
   @native
   private def encodeBatch(
@@ -29,9 +28,10 @@ class Tokenizer private (nativePtr: Long) {
       addSpecialTokens: Boolean
   ): Array[Long]
 
-  def encodeBatch(input: Seq[String], addSpecialTokens: Boolean = true): Seq[Encoding] =
+  def encodeBatch(input: Seq[String], addSpecialTokens: Boolean = true): Seq[Encoding] = {
     val encodingsPtr = encodeBatch(nativePtr, input.toArray, addSpecialTokens)
-    ArraySeq.unsafeWrapArray(encodingsPtr.map(ptr => Encoding(ptr: Long)))
+    ArraySeq.unsafeWrapArray(encodingsPtr.map(ptr => new Encoding(ptr: Long)))
+  }
 
   @native
   private def decode(
@@ -46,7 +46,7 @@ class Tokenizer private (nativePtr: Long) {
 
 object Tokenizer {
 
-  LoadNativeTokenizers()
+  new LoadNativeTokenizers()
 
   /** Instantiate a new Tokenizer from an existing file on the Hugging Face Hub.
     *
@@ -57,9 +57,10 @@ object Tokenizer {
     *
     * TODO revision and auth token
     */
-  def fromPretrained(identifier: String): Tokenizer =
+  def fromPretrained(identifier: String): Tokenizer = {
     val nativePtr = fromPretrainedNative(identifier)
-    Tokenizer(nativePtr)
+    new Tokenizer(nativePtr)
+  }
 
   /** Instantiate a new Tokenizer from the file at the given path.
     *
@@ -68,7 +69,7 @@ object Tokenizer {
     * @return
     *   The new tokenizer
     */
-  def fromFile(path: Path): Tokenizer = Tokenizer(fromFile(path.toString()))
+  def fromFile(path: Path): Tokenizer = new Tokenizer(fromFile(path.toString()))
 
   @native
   private def fromPretrainedNative(identifier: String): Long

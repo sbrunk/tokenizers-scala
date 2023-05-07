@@ -4,7 +4,7 @@ class TokenizerSuite extends munit.FunSuite {
 
   // assert encoding for
   // Hello, y'all! How are you 😁 ?
-  def assertEncoding(encoding: Encoding) =
+  def assertEncoding(encoding: Encoding) = {
     assertEquals(encoding.length, 13)
 
     assertEquals(
@@ -45,6 +45,7 @@ class TokenizerSuite extends munit.FunSuite {
         (0L, 0L)
       )
     )
+  }
 
   test("pretrained-tokenizer-encode") {
     val tokenizer = Tokenizer.fromPretrained("bert-base-cased")
