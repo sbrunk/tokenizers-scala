@@ -1,12 +1,12 @@
 // derived from https://github.com/oyvindberg/tui-scala/blob/9f6b67db089ac10a183fe9f992a6bc81df125bc9/scripts/src/scala/tui/scripts/GenJniLibrary.scala
 
-package tokenizers.scripts
+package tokenizers
+package scripts
 
 import bleep._
 import bleep.plugin.jni.{Cargo, JniNative, JniPackage}
 
 import java.nio.file.Path
-
 
 /** Build the native library with cargo and add it to classpath resources */
 object GenJniLibrary extends bleep.BleepCodegenScript("GenJniLibrary") {
@@ -30,7 +30,12 @@ object GenJniLibrary extends bleep.BleepCodegenScript("GenJniLibrary") {
         }
     }
 
-  override def run(started: Started, commands: Commands, targets: List[GenJniLibrary.Target], args: List[String]): Unit = {
+  override def run(
+      started: Started,
+      commands: Commands,
+      targets: List[GenJniLibrary.Target],
+      args: List[String]
+  ): Unit = {
     val jniPackage = new JniPackage(started.buildPaths.buildDir, tokenizersJniNativeLib(started)) {
       // override naming standard to match `NativeLoader.java`
       override lazy val managedNativeLibraries: Seq[(Path, RelPath)] = {

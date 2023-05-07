@@ -74,8 +74,7 @@ object Tokenizer {
   private def fromPretrainedNative(identifier: String): Long
 
   @native
-  private
-  def fromFile(path: String): Long
+  private def fromFile(path: String): Long
 
   @native
   private def free(nativePtr: Long): Unit

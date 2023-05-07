@@ -13,8 +13,8 @@ package object scripts {
   def projectsToPublish(crossName: model.CrossProjectName): Boolean =
     crossName.name.value match {
       case "native" | "tokenizers" => true
-      case _ => false
+      case _                       => false
     }
-  
+
   val groupId = "io.brunk.tokenizers"
 }

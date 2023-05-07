@@ -70,7 +70,6 @@ class Encoding private[tokenizers] (nativePtr: Long) {
   // // sequenceRanges: HashMap[usize, Range[usize]],
 }
 
-
 object Encoding {
   @native
   private def free(nativePtr: Long): Unit
