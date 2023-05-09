@@ -32,7 +32,7 @@ object Publish extends BleepScript("Publish") {
       sonatypeProfileName = "io.brunk",
       bundleName = "tokenizers",
       version = dynVer.version,
-      sonatypeCredentialHost = Sonatype.sonatypeLegacy
+      sonatypeCredentialHost = Sonatype.sonatype01
     )
     val ciRelease = new CiReleasePlugin(started.logger, sonatype, dynVer, pgp)
 
