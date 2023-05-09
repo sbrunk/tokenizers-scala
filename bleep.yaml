@@ -18,9 +18,6 @@ projects:
     extends: template-cross-scala
     isTestProject: true
   tokenizers:
-    dependencies:
-    - com.lihaoyi::fansi:0.3.1
-    - io.github.astonbitecode:j4rs:0.15.0
     extends: template-cross-scala
     dependsOn: native
   native:
